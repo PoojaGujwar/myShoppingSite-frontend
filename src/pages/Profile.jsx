@@ -42,12 +42,10 @@ const Profile = () => {
 
   const handleEditClick =(address)=>{
    setEditAddress(address)
-     console.log(address)
   }
   const handleInputChange=(e)=>{
     setEditAddress({...editAddress,[e.target.name]:e.target.value})
   }
-
 
   const handleEditSubmitBtn =async(addressId)=>{
 try{
@@ -72,7 +70,6 @@ try{
     }))
   );
   setEditAddress({});
-  
 }catch(error){
   console.log(error)
 }
