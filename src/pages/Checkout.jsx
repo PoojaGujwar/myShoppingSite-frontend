@@ -64,7 +64,7 @@ const Checkout = () => {
         }
       );
       if (!response.ok) {
-        throw "Failed to add address";
+        throw new Error ("Failed to add address");
       }
       setFormData(initialData);
       const data = await response.json();

@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react";
 import useFetch from "../useFetch";
-import { useLocation, useNavigate, useParams } from "react-router-dom";
+import { useLocation, useNavigate } from "react-router-dom";
 import Header from "../components/Header";
 
 const Carts = () => {
@@ -33,14 +33,12 @@ const Carts = () => {
 
   useEffect(() => {
     if (addressId && fetchAddress) {
-      console.log(addressId);
-      const filterSomething = addressData.filter((u) =>
-        u.address.find((uu) => (uu._id === addressId ? uu.address : ""))
+      const filterAddress = addressData.filter((product) =>
+        product.address.find((prod) => (prod._id === addressId ? prod.address : ""))
       );
-      setDeliveryAddress(filterSomething[0].address[0]);
-      console.log(filterSomething[0].address[0]);
+      setDeliveryAddress(filterAddress[0].address[0]);
     }
-  }, [data]);
+  },[data]);
 
   const handleSubmit = async (e, productId) => {
     e.preventDefault();
@@ -56,7 +54,7 @@ const Carts = () => {
         }
       );
       if (!response.ok) {
-        throw "Failed to add Movie";
+        throw new Error ("Failed to add Movie");
       }
       const data = await response.json();
       if (data) {
@@ -84,7 +82,7 @@ const Carts = () => {
         }
       );
       if (!response.ok) {
-        throw "Failed to add Movie";
+        throw new Error ("Failed to add Movie");
       }
       setMessage("Product removed successfully");
       setFetchData((prevData) =>
@@ -117,7 +115,7 @@ const Carts = () => {
       );
 
       if (!response.ok) {
-        throw "Failed to update product quantity";
+        throw new Error ("Failed to update product quantity");
       }
 
       setFetchData((prevData) =>
@@ -155,7 +153,7 @@ const Carts = () => {
       );
 
       if (!response.ok) {
-        throw "Failed to update product quantity";
+        throw new Error  ("Failed to update product quantity");
       }
 
       setFetchData((prevData) =>
@@ -238,18 +236,18 @@ const Carts = () => {
           <>
             <h1>Cart Items</h1>
             <div className="row">
-              <div className="col-lg-8 col-md-3 mb-3">
+              <div className="col-lg-8 col-md-12 mb-3">
                 {filterData?.map((product) => (
                   <div
                     className="card w-100 d-flex flex-row mb-3"
                     key={product.id}
-                    style={{ height: "100%" }}
+                    style={{ height: "50%" }}
                   >
                     <img
                       className="img-fluid card-img-start  "
                       src={product.imageUrl}
-                      alt="Card image cap"
-                      style={{ width: "200px", objectFit: "cover" }}
+                      alt="Cards"
+                      style={{ width: "200px", height:"100%", objectFit: "cover" }}
                     />
                     <div className="card-body d-flex flex-column align-items-center justify-content-center">
                       <p className="fs-5">{product.title}</p>
@@ -328,6 +326,8 @@ const Carts = () => {
                     )}
                   </ul>
                 </div>
+                {addressLoading && <p>loading...</p>}
+                {addressError && <p>{addressError}</p>}
                 {deliveryAddress && (
                   <div className="card p-3">
                     <h1>Delivery Address</h1>

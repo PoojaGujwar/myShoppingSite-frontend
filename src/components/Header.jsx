@@ -13,6 +13,7 @@ const Header = () => {
   };
   const handleSearchClick = () => {
     navigate(`/allProducts?search=${searchTerm}`);
+    setSearchTerm('')
   };
 
   const { data } = useFetch(
@@ -56,21 +57,21 @@ const Header = () => {
 
   return (
     <header>
-      <div>
         <nav class="navbar navbar-expand-lg">
-          <div className="container">
+          <div className="container ">
             <a class="navbar-brand me-5" href="/">
               myShoppingSite
             </a>
-            <div className="d-flex justify-content-center my-2">
-              <form className="d-flex">
-                <div className="input-group">
+
+            <div className="collapse navbar-collapse">
+                <form className="d-flex col-lg-8">
                   <input
-                    className="form-control shadow-sm"
+                    className="form-control shadow-sm "
                     type="search"
                     placeholder="Search"
                     aria-label="Search"
                     onChange={handleSearchTerm}
+                    value={searchTerm}
                   />
                   <button
                     className="btn btn-outline-secondary"
@@ -79,11 +80,9 @@ const Header = () => {
                   >
                     <i className="bi bi-search"></i>
                   </button>
+                </form>
                 </div>
-              </form>
-
-            </div>
-           
+            
             <button
               className="navbar-toggler"
               type="button"
@@ -95,9 +94,8 @@ const Header = () => {
             >
               <span className="navbar-toggler-icon"></span>
             </button>
-            
             <div
-              class="collapse navbar-collapse justify-content-end"
+              class="collapse navbar-collapse justify-content-end col-md-3"
               id="navbarNav"
             >
               <ul className="navbar-nav">
@@ -130,10 +128,10 @@ const Header = () => {
                   </NavLink>
                 </li>
               </ul>
-            </div>
           </div>
+          </div>
+         
         </nav>
-      </div>
     </header>
   );
 };

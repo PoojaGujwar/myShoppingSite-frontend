@@ -27,18 +27,14 @@ const Profile = () => {
         }
       );
       if (!response.ok) {
-        throw "Failed to delete";
+        throw new Error ("Failed to delete");
       }
-      const data =await response.json()
-      console.log(data)
       setFetchData(prevData =>
         prevData.map(user => ({
           ...user,
           address: user.address.filter(a => a._id !== addressId)
         }))
       );
-      
-    
     } catch (error) {
       console.log(error);
     }
@@ -64,10 +60,8 @@ try{
   }
   )
   if(!response.ok){
-    throw ("Failed to update")
+    throw new Error ("Failed to update")
   }
-  const updatedAddress = await response.json()
-  // console.log(updatedAddress, "Updated", editAddress)
 
   setFetchData(prevData => 
     prevData.map(user => ({
@@ -89,7 +83,7 @@ try{
     <div className="container py-3">
       <h1 className="text-center mb-3 display-3">User Profile</h1>
       {loading && <p>Loading....</p>}
-      {error ? <p>{error}</p>:""}
+      {error && <p>{error}</p>}
       {fetchData &&(
   <div className="card  my-4" style={{ width: "30rem" ,backgroundColor:"fsfsfs"}}>
   <div className="card-body">

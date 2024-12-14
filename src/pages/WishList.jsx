@@ -30,9 +30,8 @@ const WishList = () => {
         }
       );
       if (!response.ok) {
-        throw "Failed to add Movie";
+        throw new Error("Failed to add Movie");
       }
-      const data = await response.json();
 
       setFetchData((prevData) =>
         prevData.filter((product) => product._id !== productId)
@@ -65,7 +64,7 @@ const WishList = () => {
       );
       setMessage(`Product added to cart successfully.`);
       if (!response.ok) {
-        throw "Failed to Add Cart";
+        throw new Error ("Failed to Add Cart");
       }
       window.dispatchEvent(new Event("cartUpdated"));
     } catch (error) {
@@ -84,30 +83,30 @@ const WishList = () => {
     <div className="container py-3">
       <h1>Wishlist Items</h1>
       {loading && <p>Loading...</p>}
-      {error ? <p>{error}</p>:''}
+      {error && <p>{error}</p>}
       {message && <p className="alert alert-info">{message}</p>}
 
       <div className="row">
-        {selectedProduct?.map((p) => (
-          <div className="col-lg-3 col-md-4">
-            <div className="card w-100" style={{height:"100%"  }}>
+        {selectedProduct?.map((product) => (
+          <div className="col-lg-3 col-md-6 col-sm-12">
+            <div className="card w-100" style={{height:"100%"  }} >
               <img
-                src={p.imageUrl}
+                src={product.imageUrl}  alt="Product"
                 className="img-fluid card-img-top "
                 style={{width:"100%", height: "100%" ,objectFit: "cover"}}
                
               />
               <div className="card-body" style={{textDecoration:"none"}}>
-                <p className="card-title fs-3">{p.title} </p>
-                <p className="card-text fs-5">Price: {p.price} </p>
+                <p className="card-title fs-3">{product.title} </p>
+                <p className="card-text fs-6">Price: ₹{product.price}</p>
 
-                <form onSubmit={(e) => handleAddToCart(e, p._id)}>
+                <form onSubmit={(e) => handleAddToCart(e, product._id)}>
                   <button className="btn btn-primary col-12 mb-2">
                     Add to Cart
                   </button>
                 </form>
                 <button
-                  onClick={(e) => handleRemoveItem(p._id)}
+                  onClick={(e) => handleRemoveItem(product._id)}
                   className="btn btn-danger col-12"
                 >Remove from Wishlist{" "}
                 </button>

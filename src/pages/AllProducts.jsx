@@ -14,20 +14,17 @@ const AllProducts = () => {
   const [selectedCategory, setSelectedCategory] = useState("");
   const [selectedRating, setSelectedRating] = useState([]);
   const [selectedPrice, setSelectedPrice] = useState();
-  const [cart, setCart] = useState([]);
 
   const location = useLocation();
   
-  const searchParams = new URLSearchParams(location.search);
-  console.log(location,"location", searchParams)
-  //const searchTermFromUrl = searchParams.get("search") || "";
+  const searchParams = new URLSearchParams(location.search); 
   const [searchTerm, setSearchTerm] = useState('');
   
   useEffect(() => {
     const searchTermFromUrl = searchParams.get("search") || "";
     setSearchTerm(searchTermFromUrl);
     console.log(searchTermFromUrl,"Search")
-  }, [location.search]);
+  }, [location]);
 
 
 
@@ -35,12 +32,6 @@ const AllProducts = () => {
   const handleRadioBtn = (e) => {
     const value = e.target.value;
     setSelectedCategory(value);
-    // if (data) {
-    //   const filterdByCategory = data.filter(
-    //     (product) => product.category === value
-    //   );
-    //   setFetchData(filterdByCategory);
-    // }
   };
 
   const handleRatings = (e) => {
@@ -52,7 +43,7 @@ const AllProducts = () => {
     }
   };
 
-  // useEffect(() => {
+
   //   if (data) {
   //     const filteredData = searchTerm
   //     ? data.filter((product) =>
@@ -78,13 +69,6 @@ const AllProducts = () => {
   const handlePrice = (e) => {
     const value = e.target.value;
     setSelectedPrice(value);
-    // if (data) {
-    //   const filterByPrice = data
-    //     .filter((product) => product.price <= value)
-    //     .sort((a, b) => a.price - b.price);
-    //   setFetchData(filterByPrice);
-    //   //console.log(filterByPrice);
-    // }
   };
   useEffect(() => {
     if (data) {
@@ -149,7 +133,6 @@ const AllProducts = () => {
     setFetchData(data);
     setSelectedCategory("");
     setSelectedRating([]);
-    setCart([]);
     setSelectedPrice("");
     setSearchTerm("");
   };
@@ -172,7 +155,7 @@ const AllProducts = () => {
               </button>
             </div>
             <div className="mb-3">
-              <label className="">Choose one's</label>
+              <label className="">Category</label>
               <br />
               <input
                 type="radio"
@@ -335,7 +318,7 @@ const AllProducts = () => {
                           <small>
                             {product.description.substring(0, 40)}...
                           </small>
-                          <p>Price: {product.price}</p>
+                          <p>Price: ₹{product.price}</p>
                           <a
                             href={`products/${product._id}`}
                             className="btn btn-primary my-3 btn-fluid"

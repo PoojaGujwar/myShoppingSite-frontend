@@ -9,11 +9,11 @@ const ProductDetails = () => {
   const { data, loading, error } = useFetch(
     `https://backend-product-omega.vercel.app/products/${productId}`
   );
-  const handleAddToWishlist = async (e, _id) => {
+  const handleAddToWishlist = async (e, productId) => {
     e.preventDefault();
     try {
       const response = await fetch(
-        `https://backend-product-omega.vercel.app/products/${_id}`,
+        `https://backend-product-omega.vercel.app/products/${productId}`,
         {
           method: "PUT",
           headers: {
@@ -23,10 +23,9 @@ const ProductDetails = () => {
         }
       );
       if (!response.ok) {
-        throw "Failed to add Movie";
+        throw new Error("Failed to add Movie");
       }
       const data = await response.json();
-      console.log(data, _id);
       if (data) {
         setMessage("Product added to wishlist successfully");
       }
@@ -38,11 +37,11 @@ const ProductDetails = () => {
     }
   };
 
-  const handleAddToCart = async (e, _id) => {
+  const handleAddToCart = async (e, productId) => {
     e.preventDefault();
     try {
       const response = await fetch(
-        `https://backend-product-omega.vercel.app/products/${_id}`,
+        `https://backend-product-omega.vercel.app/products/${productId}`,
         {
           method: "PUT",
           headers: {
@@ -52,7 +51,7 @@ const ProductDetails = () => {
         }
       );
       if (!response.ok) {
-        throw "Failed to add Movie";
+        throw new Error("Failed to add Movie");
       }
       const data = await response.json();
       if (data) {
@@ -65,7 +64,6 @@ const ProductDetails = () => {
       setTimeout(() => setMessage(""), 2000);
     }
   };
-
 
   return (
     <>
@@ -84,14 +82,15 @@ const ProductDetails = () => {
                   src={data.imageUrl}
                   alt={data.title}
                   className="img-fluid rounded-starts"
+                  style={{ width: "100%",height:"100%"}}
                 />
               </div>
               <div className="col-md-8">
                 <div className="card-body">
                   <h2 className="card-title">{data.description}</h2>
-                  <p className="card-text">Price: {data.price}</p>
+                  <p className="card-text">Price: ₹ {data.price}</p>
                   <p className="card-text">Rating: {data.rating}</p>
-                  <div className="d-grid gap-2 col-md-12 d-md-flex text-center">
+                  <div className="d-grid gap-2 col-md-12 d-md-flex ">
                     <form onSubmit={(e) => handleAddToCart(e, data._id)}>
                       <button type="submit" className="btn btn-primary">
                         Add to Cart

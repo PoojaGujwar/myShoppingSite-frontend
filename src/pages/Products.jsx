@@ -9,8 +9,8 @@ const Products = () => {
     <Header/>
     <div className="container py-3">
       <section className="my-5">
-        <div className="row  row-cols-lg-4 row-cols-sm-4 ">
-          <div className="col">
+        <div className="row ">
+          <div className="col-lg-3 col-md-6 col-sm-12">
             <NavLink to={`/allProducts`}>
             <div class="card w-100" style={{height:"100%"}}>
               <img
@@ -26,7 +26,7 @@ const Products = () => {
             </div>
             </NavLink>
           </div>
-          <div className="col">
+          <div className="col-lg-3 col-md-6 col-sm-12">
             <NavLink to="/allProducts">
             <div class="card w-100" style={{ height:"100%"}}>
               <img
@@ -43,7 +43,7 @@ const Products = () => {
             </div>
             </NavLink>
               </div>
-          <div className="col">
+          <div className="col-lg-3 col-md-6 col-sm-12">
             <NavLink to="/allProducts">
             <div class="card w-100" style={{height:"100%"}}>
               <img
@@ -60,7 +60,7 @@ const Products = () => {
             </div>
             </NavLink>
           </div>
-          <div className="col">
+          <div className="col-lg-3 col-md-6 col-sm-12">
             <NavLink to="/allProducts">
             <div class="card w-100" style={{height:"100%"}}>
               <img
@@ -81,12 +81,13 @@ const Products = () => {
       </section>
       <section className="my-5">
       <div className="row">
-          <div className="col">
+          <div className="col-lg-12 col-md-12 col-sm-12">
             <div class="card">
               <img
                 src="https://media.istockphoto.com/id/1193750118/photo/beautiful-asian-woman-carrying-colorful-bags-shopping-online-with-mobile-phone.jpg?s=612x612&w=0&k=20&c=j1SpSX7c3qzBrUT5f7HRoOfxQnPxZY_c6yb3AvXA5f8="
                 class="card-img-top img-fluid"
                 alt="My Shopping Site"
+                style={{width:"100%",height:"100%"}}
               />
             </div>
           </div>
