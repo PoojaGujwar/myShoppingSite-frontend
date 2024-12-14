@@ -6,7 +6,6 @@ import reportWebVitals from './reportWebVitals';
 import { createBrowserRouter, RouterProvider } from "react-router-dom";
 import AllProduct from "./pages/AllProducts";
 import "./index.css";
-import Products from "./pages/Products";
 import ProductDetails from "./pages/ProductDetails";
 import WishList  from "./pages/WishList"
 import Carts from './pages/Carts';
@@ -16,7 +15,7 @@ import Profile from './pages/Profile';
 const router = createBrowserRouter([
   {
     path: "/",
-    element: <Products />,
+    element: <App />,
   },
   {
     path: "/allproducts",
