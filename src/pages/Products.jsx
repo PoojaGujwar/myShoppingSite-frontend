@@ -11,68 +11,68 @@ const Products = () => {
       <section className="my-5">
         <div className="row ">
           <div className="col-lg-3 col-md-6 col-sm-12">
-            <NavLink to={`/allProducts`}>
+            <NavLink to={`/allProducts`} style={{textDecoration:"none"}}>
             <div class="card w-100" style={{height:"100%"}}>
               <img
                 src="https://media.istockphoto.com/id/2165224003/photo/happy-man-holding-colorful-shopping-bags-on-blue-background.jpg?s=2048x2048&w=is&k=20&c=bkCljFPezjgMt7AchBM4wdhpEu__mrJe_Cm7_joIlDw="
-                alt="Men Image"
+                alt="Men"
                 style={{width:"100%",height:"100%" }}
               />
               <div className="card-body text-center">
-                <a className="card-text fw-normal">
+                <h5 className="card-text fw-normal">
                   Men
-                </a>
+                </h5>
               </div>
             </div>
             </NavLink>
           </div>
           <div className="col-lg-3 col-md-6 col-sm-12">
-            <NavLink to="/allProducts">
+            <NavLink to="/allProducts" style={{textDecoration:"none"}}>
             <div class="card w-100" style={{ height:"100%"}}>
               <img
                 src="https://img.freepik.com/premium-photo/clothing-sale-fashion-style-people-concept-happy-woman-choosing-clothes-shopping-center-mall_380164-124202.jpg"
                 class="card-img-top"
-                alt="Women Image"
+                alt="Women"
                 style={{width:"100%",height:"100%"}}
               />
               <div className="card-body text-center">
-                <a className="card-text">
+                <h5 className="card-text fw-normal">
                   Women
-                </a>
+                </h5>
               </div>
             </div>
             </NavLink>
               </div>
           <div className="col-lg-3 col-md-6 col-sm-12">
-            <NavLink to="/allProducts">
+            <NavLink to="/allProducts" style={{textDecoration:"none"}}>
             <div class="card w-100" style={{height:"100%"}}>
               <img
                 src="https://media.istockphoto.com/id/1364393531/photo/funny-little-girl-choosing-clothes-on-rack-indoors.jpg?s=612x612&w=0&k=20&c=kpjIeykvqGcIJ-yBIRNytzaV9d76XbNRly3mGmBPIAs="
                 class="card-img-top"
-                alt="Kids Image"
+                alt="Kids"
                 style={{width:"100%",height:"100%"}}
               />
               <div className="card-body text-center">
-                <a className="card-text" href="/allProducts">
+                <h5 className="card-text fw-normal">
                   Kids
-                </a>
+                </h5>
               </div>
             </div>
             </NavLink>
           </div>
           <div className="col-lg-3 col-md-6 col-sm-12">
-            <NavLink to="/allProducts">
+            <NavLink to="/allProducts" style={{textDecoration:"none"}}>
             <div class="card w-100" style={{height:"100%"}}>
               <img
                 src="https://www.getonecard.app/images/blog/Shopping_Electronics.png"
                 class="card-img-top"
-                alt="Electronic Image"
+                alt="Electronic"
                 style={{width:"100%",height:"100%"}}
               />
               <div className="card-body text-center">
-                <a className="card-text" href="/allProducts">
+                <h5 className="card-text fw-normal">
                   Electronics
-                </a>
+                </h5>
               </div>
             </div>
             </NavLink>
