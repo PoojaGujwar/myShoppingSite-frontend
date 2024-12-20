@@ -6,6 +6,7 @@ import Header from "../components/Header";
 const ProductDetails = () => {
   const { productId } = useParams();
   const [message, setMessage] = useState("");
+  const [text, setText] = useState("Add to Wishlist")
   const { data, loading, error } = useFetch(
     `https://backend-product-omega.vercel.app/products/${productId}`
   );
@@ -64,6 +65,17 @@ const ProductDetails = () => {
       setTimeout(() => setMessage(""), 2000);
     }
   };
+  const renderStars = (rating) => {
+    const stars = [];
+    for (let i = 1; i <= 5; i++) {
+      stars.push(
+        <span key={i} style={{ color: i <= rating ? "gold" : "lightgray" }}>
+          ★
+        </span>
+      );
+    }
+    return stars;
+  };
 
   return (
     <>
@@ -89,7 +101,7 @@ const ProductDetails = () => {
                 <div className="card-body">
                   <h2 className="card-title">{data.description}</h2>
                   <p className="card-text">Price: ₹ {data.price}</p>
-                  <p className="card-text">Rating: {data.rating}</p>
+                  <p className="card-text">Rating: {renderStars(data.rating)}({data.rating}/5)</p>
                   <div className="d-grid gap-2 col-md-12 d-md-flex ">
                     <form onSubmit={(e) => handleAddToCart(e, data._id)}>
                       <button type="submit" className="btn btn-primary">
@@ -97,8 +109,8 @@ const ProductDetails = () => {
                       </button>
                     </form>
                     <form onSubmit={(e) => handleAddToWishlist(e, data._id)}>
-                      <button className="btn btn-secondary" type="submit">
-                        <i className="bi bi-heart"></i> Add to Wishlist
+                      <button className="btn btn-secondary" style={{backgroundColor:text ==="Add to Wishlist"?"gray":"Red"}} type="submit" onClick={(e)=>setText(text === "Add to Wishlist"?"Remove from Wishlist":"Add to Wishlist")}>
+                        <i className="bi bi-heart"></i> {text}
                       </button>
                     </form>
                   </div>

@@ -69,7 +69,6 @@ const Carts = () => {
   };
   const handleRemoveToCart = async (e, productId) => {
     e.preventDefault();
-
     try {
       const response = await fetch(
         `https://backend-product-omega.vercel.app/products/${productId}`,
@@ -220,7 +219,7 @@ const Carts = () => {
 
   setTimeout(() => {
     setSuccussMessage("");
-  }, 2000);
+  }, 1000);
 
 
 
@@ -228,23 +227,23 @@ const Carts = () => {
     <>
       <Header />
       <div className="container py-3 ">
-        {loading && <p>Loading...</p>}
-        {error && <p>{error}</p>}
-        {message && <p className="alert alert-info">{message}</p>}
-
-        {filterData && filterData.length > 0 ? (
+      {message && <p className="alert alert-info">{message}</p>}
+        {loading || addressLoading ? <p>Loading...</p>:
+        error || addressError ? <p>{error}</p> : 
+        filterData && filterData.length > 0 ? (
           <>
             <h1>Cart Items</h1>
             <div className="row">
-              <div className="col-lg-8 col-md-12 mb-3">
+              
                 {filterData?.map((product) => (
+                  <div className="col-lg-8 col-md-12 mb-3">
                   <div
                     className="card w-100 d-flex flex-row mb-3"
                     key={product.id}
-                    style={{ height: "50%" }}
+                    style={{ height: "100%" }}
                   >
                     <img
-                      className="img-fluid card-img-start  "
+                      className="img-fluid "
                       src={product.imageUrl}
                       alt="Cards"
                       style={{ width: "200px", height:"100%", objectFit: "cover" }}
@@ -286,8 +285,9 @@ const Carts = () => {
                       </div>
                     </div>
                   </div>
+                  </div>
                 ))}
-              </div>
+             
               <div className="col-lg-4">
                 <div className="card p-3 mb-3">
                   <h3 className="card-title">Cart Summary</h3>
@@ -340,18 +340,21 @@ const Carts = () => {
               </div>
             </div>
           </>
-        ) : (
+        )  :
+        
           <div>
-            <h1>Your Cart is Empty</h1>
-            {successMessage && (
-              <p className="alert alert-success">{successMessage}</p>
-            )}
-
-            <button onClick={handleContinueBtn} className="btn btn-primary">
-              Continue Shopping
-            </button>
-          </div>
-        )}
+          <h1>Your Cart is Empty</h1>
+          {successMessage && (
+            <p className="alert alert-success">{successMessage}</p>
+          )}
+          <button onClick={handleContinueBtn} className="btn btn-primary">
+            Continue Shopping
+          </button>
+       
+        
+        </div>
+}
+        
       </div>
     </>
   );

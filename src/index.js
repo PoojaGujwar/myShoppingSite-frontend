@@ -15,7 +15,7 @@ import Profile from './pages/Profile';
 const router = createBrowserRouter([
   {
     path: "/",
-    element: <App />,
+    element: < App />,
   },
   {
     path: "/allproducts",

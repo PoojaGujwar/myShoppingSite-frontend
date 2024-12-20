@@ -3,7 +3,7 @@ import "bootstrap-icons/font/bootstrap-icons.css";
 import Header from "../components/Header";
 
 import useFetch from "../useFetch";
-import {useLocation} from "react-router-dom";
+import { useLocation } from "react-router-dom";
 
 const AllProducts = () => {
   const { data, loading, error } = useFetch(
@@ -13,21 +13,18 @@ const AllProducts = () => {
   const [fetchData, setFetchData] = useState([]);
   const [selectedCategory, setSelectedCategory] = useState("");
   const [selectedRating, setSelectedRating] = useState([]);
-  const [selectedPrice, setSelectedPrice] = useState();
+  const [selectedPrice, setSelectedPrice] = useState(0);
 
   const location = useLocation();
-  
-  const searchParams = new URLSearchParams(location.search); 
-  const [searchTerm, setSearchTerm] = useState('');
-  
+
+  const searchParams = new URLSearchParams(location.search);
+  const [searchTerm, setSearchTerm] = useState("");
+
   useEffect(() => {
     const searchTermFromUrl = searchParams.get("search") || "";
     setSearchTerm(searchTermFromUrl);
-    console.log(searchTermFromUrl,"Search")
+    console.log(searchTermFromUrl, "Search");
   }, [location]);
-
-
-
 
   const handleRadioBtn = (e) => {
     const value = e.target.value;
@@ -43,8 +40,7 @@ const AllProducts = () => {
     }
   };
 
-
-  //   if (data) {
+ 
   //     const filteredData = searchTerm
   //     ? data.filter((product) =>
   //         product.name?.toLowerCase().includes(searchTerm.toLowerCase())
@@ -66,7 +62,7 @@ const AllProducts = () => {
   //   }
   // }, [selectedRating, data]);
 
-  const handlePrice = (e) => {
+  const handleRangeChange = (e) => {
     const value = e.target.value;
     setSelectedPrice(value);
   };
@@ -93,9 +89,9 @@ const AllProducts = () => {
       }
 
       if (selectedPrice) {
-        filteredData = filteredData.filter(
-          (product) => product.price >= selectedPrice
-        ).sort((a, b) => a.price - b.price);;
+        filteredData = filteredData
+          .filter((product) => product.price <= selectedPrice)
+          .sort((a, b) => a.price - b.price);
       }
 
       setFetchData(filteredData);
@@ -103,10 +99,10 @@ const AllProducts = () => {
   }, [data, searchTerm, selectedCategory, selectedRating, selectedPrice]);
 
   const handleLikeToggle = async (id, currentLikes) => {
-    
     try {
-      const newLikes = currentLikes === 0?currentLikes+1:currentLikes=0
-      console.log(newLikes)
+      const newLikes =
+        currentLikes === 0 ? currentLikes + 1 : (currentLikes = 0);
+      console.log(newLikes);
       const response = await fetch(
         `https://backend-product-omega.vercel.app/products/${id}`,
         {
@@ -128,18 +124,29 @@ const AllProducts = () => {
       console.log(error);
     }
   };
-  
+
   const handleClearBtn = () => {
     setFetchData(data);
     setSelectedCategory("");
     setSelectedRating([]);
-    setSelectedPrice("");
+    setSelectedPrice(0);
     setSearchTerm("");
+  };
+  const renderStars = (rating) => {
+    const stars = [];
+    for (let i = 1; i <= 5; i++) {
+      stars.push(
+        <span key={i} style={{ color: i <= rating ? "gold" : "lightgray" }}>
+          ★
+        </span>
+      );
+    }
+    return stars;
   };
 
   return (
     <>
-      <Header/>
+      <Header />
       <div className="py-3 container">
         <div className="row">
           <div className="col col-lg-3 ">
@@ -149,7 +156,7 @@ const AllProducts = () => {
               <button
                 onClick={handleClearBtn}
                 className="float-end btn btn-primary"
-                style={{position:"relative" , right:"10px"}}
+                style={{ position: "relative", right: "10px" }}
               >
                 Clear
               </button>
@@ -210,7 +217,7 @@ const AllProducts = () => {
                 checked={selectedRating.includes("4")}
                 className="me-2"
               />{" "}
-              4 starts & above <br />
+              4 starts <br />
               <input
                 type="checkbox"
                 value={3}
@@ -218,7 +225,7 @@ const AllProducts = () => {
                 checked={selectedRating.includes("3")}
                 className="me-2"
               />{" "}
-              3 starts & above <br />
+              3 starts <br />
               <input
                 type="checkbox"
                 value={2}
@@ -226,7 +233,8 @@ const AllProducts = () => {
                 checked={selectedRating.includes("2")}
                 className="me-2"
               />{" "}
-              2 starts & above <br />
+              2 starts
+              <br />
               <input
                 type="checkbox"
                 value={1}
@@ -234,45 +242,23 @@ const AllProducts = () => {
                 checked={selectedRating.includes("1")}
                 className="me-2"
               />{" "}
-              1 starts & above <br />
+              1 starts <br />
             </div>
             <div className="mb-3">
               <label>Sort by Price</label>
-              <br />
+
               <input
-                type="radio"
-                name="price"
-                value={500}
-                checked={selectedPrice == 500}
-                onChange={handlePrice}
-              />{" "}
-              500 <br />
-              <input
-                type="radio"
-                name="price"
-                value={1000}
-                checked={selectedPrice == 1000}
-                onChange={handlePrice}
-              />{" "}
-              1000
-              <br />
-              <input
-                type="radio"
-                name="price"
-                value={1500}
-                checked={selectedPrice == 1500}
-                onChange={handlePrice}
-              />{" "}
-              1500
-              <br />
-              <input
-                type="radio"
-                name="price"
-                value={2000}
-                checked={selectedPrice == 2000}
-                onChange={handlePrice}
-              />{" "}
-              2000
+                id="price-range"
+                type="range"
+                min="500"
+                max="5000"
+                step="100"
+                value={selectedPrice}
+                onChange={handleRangeChange}
+                style={{ width: "100%" }}
+              />
+              <span>{selectedPrice}</span>
+
               <br />
             </div>
           </div>
@@ -282,54 +268,57 @@ const AllProducts = () => {
             {loading && <p>Loading....</p>}
             {error && <p>{error}</p>}
             <div className="row">
-               {fetchData?.map((product) => (
-                    <div className="col-lg-3 col-md-6 mb-3">
-      
-                      <div
-                        className="card w-100"
-                        style={{  height: "100%" }}
-                      >
-                        <img
-                          src={product.imageUrl}
-                          alt={product.title}
-                          className="img-fluid card-img-top "
-                          style={{ width:"100%",height: "100%",objectFit:"cover" }}
-                        />
-                        
-                        <i
-                          className={`bi ${
-                            product.likes ? "bi-heart-fill" : "bi-heart-fill"
-                          }`}
-                          onClick={() =>
-                            handleLikeToggle(product._id, product.likes)
-                          }
-                          style={{
-                            position: "absolute",
-                            top: "10px",
-                            right: "10px",
-                            fontSize: "20px",
-                            color: product.likes ? "red" : "white",
-                            cursor: "pointer",
-              
-                          }}
-                        ></i>
+              {fetchData?.map((product) => (
+                <div className="col-lg-3 col-md-6 mb-3">
+                  <div className="card w-100" style={{ height: "100%" }}>
+                    <img
+                      src={product.imageUrl}
+                      alt={product.title}
+                      className="img-fluid card-img-top "
+                      style={{
+                        width: "100%",
+                        height: "100%",
+                        objectFit: "cover",
+                      }}
+                    />
 
-                        <div className="card-body py-3 text-center">
-                          <small>
-                            {product.description.substring(0, 40)}...
-                          </small>
-                          <p>Price: ₹{product.price}</p>
-                          <a
-                            href={`products/${product._id}`}
-                            className="btn btn-primary my-3 btn-fluid"
-                          >
-                            Add to Cart
-                          </a>
-                        </div>
-                      </div>
-                      
+                    <i
+                      className={`bi ${
+                        product.isWishlist ? "bi-heart-fill" : "bi-heart-fill"
+                      }`}
+                      onClick={() =>
+                        handleLikeToggle(product._id, product.likes)
+                      }
+                      style={{
+                        position: "absolute",
+                        top: "10px",
+                        right: "10px",
+                        fontSize: "20px",
+                        color: product.isWishlist ? "red" : "white",
+                        backgroundColor: "gray",
+                        cursor: "pointer",
+                        padding: "0rem 0.2rem",
+                        borderRadius: "50%",
+                      }}
+                    ></i>
+
+                    <div className="card-body py-3 text-center">
+                      <small>{product.description.substring(0, 40)}...</small>
+                      <p>Price: ₹{product.price}</p>
+                      <p>
+                        Rating: {renderStars(product.rating)} ({product.rating}
+                        /5)
+                      </p>
+                      <a
+                        href={`products/${product._id}`}
+                        className="btn btn-primary my-3 btn-fluid"
+                      >
+                        View Product
+                      </a>
                     </div>
-                  ))}
+                  </div>
+                </div>
+              ))}
             </div>
           </div>
         </div>
