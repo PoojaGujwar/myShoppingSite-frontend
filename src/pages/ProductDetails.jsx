@@ -1,18 +1,26 @@
-import { useParams } from "react-router-dom";
+import { useParams} from "react-router-dom";
 import useFetch from "../useFetch";
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import Header from "../components/Header";
 
 const ProductDetails = () => {
   const { productId } = useParams();
   const [message, setMessage] = useState("");
-  const [text, setText] = useState("Add to Wishlist")
+  const [wishlist, setIsWishlist] = useState(false);
   const { data, loading, error } = useFetch(
     `https://backend-product-omega.vercel.app/products/${productId}`
   );
+
+  useEffect(() => {
+    if (data?.isWishlist) {
+      setIsWishlist(true)
+    }
+  }, [data]);
+
   const handleAddToWishlist = async (e, productId) => {
     e.preventDefault();
     try {
+      const isRemoving = wishlist;
       const response = await fetch(
         `https://backend-product-omega.vercel.app/products/${productId}`,
         {
@@ -20,7 +28,9 @@ const ProductDetails = () => {
           headers: {
             "Content-Type": "application/json",
           },
-          body: JSON.stringify({ isWishlist: true }),
+          body: JSON.stringify({
+            isWishlist: !isRemoving
+          }),
         }
       );
       if (!response.ok) {
@@ -28,9 +38,18 @@ const ProductDetails = () => {
       }
       const data = await response.json();
       if (data) {
+        if(isRemoving){
+          setMessage("Product removed from wishlist successfully");
+          setIsWishlist(!isRemoving);
+        }
+       else {
         setMessage("Product added to wishlist successfully");
+       setIsWishlist(!isRemoving);
       }
-      window.dispatchEvent(new Event("wishlistUpdated"));
+      window.dispatchEvent(
+        new Event(isRemoving ? "wishlistRemoved" : "wishlistUpdated")
+      );
+    }
     } catch (error) {
       console.log(error, "inWishlist");
     } finally {
@@ -40,6 +59,7 @@ const ProductDetails = () => {
 
   const handleAddToCart = async (e, productId) => {
     e.preventDefault();
+
     try {
       const response = await fetch(
         `https://backend-product-omega.vercel.app/products/${productId}`,
@@ -94,23 +114,34 @@ const ProductDetails = () => {
                   src={data.imageUrl}
                   alt={data.title}
                   className="img-fluid rounded-starts"
-                  style={{ width: "100%",height:"100%"}}
+                  style={{ width: "100%", height: "100%" }}
                 />
               </div>
               <div className="col-md-8">
                 <div className="card-body">
                   <h2 className="card-title">{data.description}</h2>
                   <p className="card-text">Price: ₹ {data.price}</p>
-                  <p className="card-text">Rating: {renderStars(data.rating)}({data.rating}/5)</p>
+                  <p className="card-text">
+                    Rating: {renderStars(data.rating)}({data.rating}/5)
+                  </p>
                   <div className="d-grid gap-2 col-md-12 d-md-flex ">
                     <form onSubmit={(e) => handleAddToCart(e, data._id)}>
                       <button type="submit" className="btn btn-primary">
                         Add to Cart
                       </button>
                     </form>
-                    <form onSubmit={(e) => handleAddToWishlist(e, data._id)}>
-                      <button className="btn btn-secondary" style={{backgroundColor:text ==="Add to Wishlist"?"gray":"Red"}} type="submit" onClick={(e)=>setText(text === "Add to Wishlist"?"Remove from Wishlist":"Add to Wishlist")}>
-                        <i className="bi bi-heart"></i> {text}
+                    <form
+                      onSubmit={(e) => handleAddToWishlist(e, data._id)}
+                    >
+                      <button
+                        className="btn btn-secondary"
+                        style={{
+                          backgroundColor:
+                            wishlist?  "Red":"gray",
+                        }}
+                        type="submit"
+                      >
+                        <i className="bi bi-heart"></i> {wishlist ? "Remove from Wishlist" : "Add to Wishlist"}
                       </button>
                     </form>
                   </div>
@@ -124,3 +155,4 @@ const ProductDetails = () => {
   );
 };
 export default ProductDetails;
+
