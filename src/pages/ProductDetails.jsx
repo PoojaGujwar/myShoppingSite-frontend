@@ -126,7 +126,7 @@ const ProductDetails = () => {
                   </p>
                   <div className="d-grid gap-2 col-md-12 d-md-flex ">
                     <form onSubmit={(e) => handleAddToCart(e, data._id)}>
-                      <button type="submit" className="btn btn-primary">
+                      <button type="submit" className="btn btn-primary" disabled={data.isCart}>
                         Add to Cart
                       </button>
                     </form>
