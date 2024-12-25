@@ -1,44 +1,27 @@
 import { useEffect, useState } from "react";
 import useFetch from "../useFetch";
-import { useLocation, useNavigate } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 import Header from "../components/Header";
 
 const Carts = () => {
   const [fetchData, setFetchData] = useState([]);
   const [message, setMessage] = useState("");
   const [successMessage, setSuccussMessage] = useState("");
-  const [fetchAddress, setFetchAddress] = useState();
-  const [deliveryAddress, setDeliveryAddress] = useState();
   const navigate = useNavigate();
-  const location = useLocation();
-  const addressId = location.state?.addressId;
 
   const { data, loading, error } = useFetch(
     `https://backend-product-omega.vercel.app/products`
   );
-  const {
-    data: addressData,
-    loading: addressLoading,
-    error: addressError,
-  } = useFetch(`https://backend-product-omega.vercel.app/address`);
+  
 
   useEffect(() => {
     if (data) {
       setFetchData(data);
     }
-    if (addressData) {
-      setFetchAddress(addressData);
-    }
-  }, [data, addressData]);
+   
+  }, [data]);
 
-  useEffect(() => {
-    if (addressId && fetchAddress) {
-      const filterAddress = addressData.filter((product) =>
-        product.address.find((prod) => (prod._id === addressId ? prod.address : ""))
-      );
-      setDeliveryAddress(filterAddress[0].address[0]);
-    }
-  },[data]);
+
 
   const handleSubmit = async (e, productId) => {
     e.preventDefault();
@@ -179,37 +162,10 @@ const Carts = () => {
     { total: 0, totalItem: 0 }
   );
 
-  const handleCheckoutBtn = (productId) => {
-    navigate(`/checkout/${productId}`);
+  const handleCheckoutBtn = () => {
+    navigate(`/checkout`);
   };
 
-  const handleDeliveryMessage = async () => {
-    try {
-      await Promise.all(
-        filterData.map(async (product) => {
-          const response = await fetch(
-            `https://backend-product-omega.vercel.app/products/${product._id}`,
-            {
-              method: "PUT",
-              headers: {
-                "Content-Type": "application/json",
-              },
-              body: JSON.stringify({ isCart: false }),
-            }
-          );
-          if (!response.ok) {
-            throw new Error("Failed to update cart item");
-          }
-        })
-      );
-      setSuccussMessage("Order placed successfully!");
-      setFetchData((prevData) =>
-        prevData.map((item) => ({ ...item, isCart: false }))
-      );
-    } catch (error) {
-      console.log(error);
-    }
-  };
 
   const handleContinueBtn = () => {
     setTimeout(() => {
@@ -228,15 +184,15 @@ const Carts = () => {
       <Header />
       <div className="container py-3 ">
       {message && <p className="alert alert-info">{message}</p>}
-        {loading || addressLoading ? <p>Loading...</p>:
-        error || addressError ? <p>{error}</p> : 
+        {loading  ? <p>Loading...</p>:
+        error  ? <p>{error}</p> : 
         filterData && filterData.length > 0 ? (
           <>
             <h1>Cart Items</h1>
             <div className="row">
-              
+              <div className="col-lg-8 col-md-12 mb-3">
                 {filterData?.map((product) => (
-                  <div className="col-lg-8 col-md-12 mb-3">
+                  <div className="col-lg-12">
                   <div
                     className="card w-100 d-flex flex-row mb-3"
                     key={product.id}
@@ -246,7 +202,7 @@ const Carts = () => {
                       className="img-fluid "
                       src={product.imageUrl}
                       alt="Cards"
-                      style={{ width: "200px", height:"100%", objectFit: "cover" }}
+                      style={{ width: "250px", height:"100%", objectFit: "cover" }}
                     />
                     <div className="card-body d-flex flex-column align-items-center justify-content-center">
                       <p className="fs-5">{product.title}</p>
@@ -271,7 +227,7 @@ const Carts = () => {
                       </div>
                       <div className="d-flex gap-2 py-3 align-items-center">
                         <form onSubmit={(e) => handleSubmit(e, product._id)}>
-                          <button className="btn btn-primary">
+                          <button className="btn btn-primary" disabled={product.isWishlist}>
                            <i class="bi bi-heart"></i> Add to Wishlist
                           </button>
                         </form>
@@ -287,6 +243,7 @@ const Carts = () => {
                   </div>
                   </div>
                 ))}
+                </div>
              
               <div className="col-lg-4">
                 <div className="card p-3 mb-3">
@@ -309,34 +266,17 @@ const Carts = () => {
                       </span>
                       <span>₹{totalPriceAndQuantity.total}</span>
                     </li>
-                    {deliveryAddress ? (
+                   
                       <button
                         className="btn btn-primary"
-                        onClick={handleDeliveryMessage}
+                        onClick={handleCheckoutBtn}
                       >
                         PLACE ORDER
-                      </button>
-                    ) : (
-                      <button
-                        className="btn btn-primary"
-                        onClick={() => handleCheckoutBtn(filterData[0]._id)}
-                      >
-                        PLACE ORDER
-                      </button>
-                    )}
+                        </button>
+                    
                   </ul>
                 </div>
-                {addressLoading && <p>loading...</p>}
-                {addressError && <p>{addressError}</p>}
-                {deliveryAddress && (
-                  <div className="card p-3">
-                    <h1>Delivery Address</h1>
-                    <p>
-                      {deliveryAddress.address}, {deliveryAddress.city},{" "}
-                      {deliveryAddress.state}, {deliveryAddress.zipCode}
-                    </p>
-                  </div>
-                )}
+                
               </div>
             </div>
           </>

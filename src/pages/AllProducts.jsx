@@ -11,7 +11,7 @@ const AllProducts = () => {
   );
 
   const [fetchData, setFetchData] = useState([]);
-  const [selectedCategory, setSelectedCategory] = useState("");
+  const [selectedCategory, setSelectedCategory] = useState([]);
   const [selectedRating, setSelectedRating] = useState([]);
   const [selectedPrice, setSelectedPrice] = useState(0);
 
@@ -23,12 +23,15 @@ const AllProducts = () => {
   useEffect(() => {
     const searchTermFromUrl = searchParams.get("search") || "";
     setSearchTerm(searchTermFromUrl);
-    console.log(searchTermFromUrl, "Search");
   }, [location]);
 
   const handleRadioBtn = (e) => {
-    const value = e.target.value;
-    setSelectedCategory(value);
+    const {value, checked} = e.target;
+    if(checked){
+      setSelectedCategory((prevValue)=>[...prevValue, value]);
+    }else{
+      setSelectedCategory((prev)=>prev.filter((val)=>val !== value))
+    }
   };
 
   const handleRatings = (e) => {
@@ -76,9 +79,9 @@ const AllProducts = () => {
         );
       }
 
-      if (selectedCategory) {
+      if (selectedCategory.length > 0) {
         filteredData = filteredData.filter(
-          (product) => product.category === selectedCategory
+          (product) => selectedCategory.includes(product.category)
         );
       }
 
@@ -98,11 +101,9 @@ const AllProducts = () => {
     }
   }, [data, searchTerm, selectedCategory, selectedRating, selectedPrice]);
 
-  const handleLikeToggle = async (id, currentLikes) => {
+  const handleLikeToggle = async (id,productWishlist) => {
+    const newWishlistStatus = !productWishlist
     try {
-      const newLikes =
-        currentLikes === 0 ? currentLikes + 1 : (currentLikes = 0);
-      console.log(newLikes);
       const response = await fetch(
         `https://backend-product-omega.vercel.app/products/${id}`,
         {
@@ -110,16 +111,18 @@ const AllProducts = () => {
           headers: {
             "Content-Type": "application/json",
           },
-          body: JSON.stringify({ likes: newLikes }),
+          body: JSON.stringify({ isWishlist: newWishlistStatus }),
         }
       );
-      const resData = await response.json();
+    
       setFetchData((prevData) =>
         prevData.map((product) =>
-          product._id === id ? { ...product, likes: resData.likes } : product
+          product._id === id ? { ...product, isWishlist: newWishlistStatus } : product
         )
       );
-      // console.log(resData);
+      window.dispatchEvent(
+        new Event(newWishlistStatus ?  "wishlistUpdated":"wishlistRemoved" )
+      );
     } catch (error) {
       console.log(error);
     }
@@ -127,7 +130,7 @@ const AllProducts = () => {
 
   const handleClearBtn = () => {
     setFetchData(data);
-    setSelectedCategory("");
+    setSelectedCategory([]);
     setSelectedRating([]);
     setSelectedPrice(0);
     setSearchTerm("");
@@ -165,41 +168,38 @@ const AllProducts = () => {
               <label className="">Category</label>
               <br />
               <input
-                type="radio"
-                name="category"
+                type="checkbox"
                 value="men"
                 className="me-2"
-                checked={selectedCategory === "men"}
+                checked={selectedCategory.includes("men")}
                 onChange={handleRadioBtn}
               />
               {""}
               Men
               <br />
               <input
-                type="radio"
-                name="category"
+                type="checkbox"
+                
                 value="women"
                 className="me-2"
-                checked={selectedCategory === "women"}
+                checked={selectedCategory.includes("women")}
                 onChange={handleRadioBtn}
               />{" "}
               Women
               <br />
               <input
-                type="radio"
-                name="category"
+                type="checkbox"
                 value="kids"
                 className="me-2"
-                checked={selectedCategory === "kids"}
+                checked={selectedCategory.includes("kids")}
                 onChange={handleRadioBtn}
               />{" "}
               Kids <br />
               <input
-                type="radio"
-                name="category"
+                type="checkbox"
                 value="electronic"
                 className="me-2"
-                checked={selectedCategory === "electronic"}
+                checked={selectedCategory.includes("electronic")}
                 onChange={handleRadioBtn}
               />{" "}
               Electronics
@@ -246,7 +246,7 @@ const AllProducts = () => {
             </div>
             <div className="mb-3">
               <label>Sort by Price</label>
-
+<br/>
               <input
                 id="price-range"
                 type="range"
@@ -255,8 +255,8 @@ const AllProducts = () => {
                 step="100"
                 value={selectedPrice}
                 onChange={handleRangeChange}
-                style={{ width: "100%" }}
-              />
+                style={{ width: "50%" }}
+              />  
               <span>{selectedPrice}</span>
 
               <br />
@@ -287,7 +287,7 @@ const AllProducts = () => {
                         product.isWishlist ? "bi-heart-fill" : "bi-heart-fill"
                       }`}
                       onClick={() =>
-                        handleLikeToggle(product._id, product.likes)
+                        handleLikeToggle(product._id,product.isWishlist)
                       }
                       style={{
                         position: "absolute",

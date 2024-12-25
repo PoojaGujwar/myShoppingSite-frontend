@@ -47,11 +47,15 @@ const WishList = () => {
 
   const handleAddToCart = async (e, productId) => {
     e.preventDefault();
+    const product = fetchData?.find((item)=>item._id === productId)
+
+    if (product.isCart) {
+      setMessage("This product is already in the cart.");
+      setTimeout(() => setMessage(""), 2000);
+      return; 
+    }
 
     try {
-      const product = fetchData.find((item) => item._id === productId);
-      const newQuantity = (product?.quantity || 0) + 1;
-
       const response = await fetch(
         `https://backend-product-omega.vercel.app/products/${productId}`,
         {
@@ -59,10 +63,15 @@ const WishList = () => {
           headers: {
             "Content-Type": "application/json",
           },
-          body: JSON.stringify({ isCart: true, quantity: newQuantity }),
+          body: JSON.stringify({ isCart: true}),
         }
       );
       setMessage(`Product added to cart successfully.`);
+      setFetchData((prevData) =>
+        prevData.map((item) =>
+          item._id === productId ? { ...item, isCart: true } : item
+        )
+      );
       if (!response.ok) {
         throw new Error ("Failed to Add Cart");
       }
@@ -101,7 +110,7 @@ const WishList = () => {
                 <p className="card-text fs-6">Price: ₹{product.price}</p>
 
                 <form onSubmit={(e) => handleAddToCart(e, product._id)}>
-                  <button className="btn btn-primary col-12 mb-2">
+                  <button className="btn btn-primary col-12 mb-2" disabled={product.isCart}>
                     Add to Cart
                   </button>
                 </form>
