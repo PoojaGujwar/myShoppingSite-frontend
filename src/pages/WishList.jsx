@@ -48,13 +48,6 @@ const WishList = () => {
   const handleAddToCart = async (e, productId) => {
     e.preventDefault();
     const product = fetchData?.find((item)=>item._id === productId)
-
-    if (product.isCart) {
-      setMessage("This product is already in the cart.");
-      setTimeout(() => setMessage(""), 2000);
-      return; 
-    }
-
     try {
       const response = await fetch(
         `https://backend-product-omega.vercel.app/products/${productId}`,
@@ -106,7 +99,7 @@ const WishList = () => {
                
               />
               <div className="card-body" style={{textDecoration:"none"}}>
-                <p className="card-title fs-3">{product.title} </p>
+                <p className="card-title fs-5">{product.name} </p>
                 <p className="card-text fs-6">Price: ₹{product.price}</p>
 
                 <form onSubmit={(e) => handleAddToCart(e, product._id)}>

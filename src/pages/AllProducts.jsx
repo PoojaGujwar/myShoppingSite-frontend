@@ -303,11 +303,10 @@ const AllProducts = () => {
                     ></i>
 
                     <div className="card-body py-3 text-center">
-                      <small>{product.description.substring(0, 40)}...</small>
+                      <small>{product.title.substring(0, 20)}...</small>
                       <p>Price: ₹{product.price}</p>
                       <p>
-                        Rating: {renderStars(product.rating)} ({product.rating}
-                        /5)
+                        Rating: {renderStars(product.rating)} 
                       </p>
                       <a
                         href={`products/${product._id}`}

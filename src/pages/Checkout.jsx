@@ -71,7 +71,7 @@ const Checkout = () => {
     }
   };
 
-  // const handleAddAddress = () => {
+  
   //   setFormData((prevState) => ({
   //     ...prevState,
   //     address: [
@@ -188,8 +188,14 @@ const Checkout = () => {
      
     } catch (error) {
       console.log(error);
+    }finally{
+      setTimeout(()=>{setMessage("")},1000)
     }
+    if(deliveryAddress){
     navigate("/cart")
+    }else{
+      setMessage("Please Select one delivery address to proceed.")
+    }
   };
   return (
     <div style={{ backgroundColor: "#f5f5f5" }}>
