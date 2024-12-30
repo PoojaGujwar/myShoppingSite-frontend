@@ -75,7 +75,8 @@ const AllProducts = () => {
 
       if (searchTerm) {
         filteredData = filteredData.filter((product) =>
-          product.description?.toLowerCase().includes(searchTerm.toLowerCase())
+          (product.description && product.description.toLowerCase().includes(searchTerm.toLowerCase())) ||
+    (product.category?.toLowerCase().includes(searchTerm.toLowerCase()))
         );
       }
 

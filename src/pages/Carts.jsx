@@ -205,7 +205,7 @@ const Carts = () => {
                       style={{ width: "250px", height:"100%", objectFit: "cover" }}
                     />
                     <div className="card-body d-flex flex-column align-items-center justify-content-center">
-                      <p className="fs-5">{product.title}</p>
+                      <p className="fs-5">{product.name}</p>
                       <p className="card-text fw-bold fs-3">
                         ₹ {product.price}
                       </p>
@@ -255,7 +255,7 @@ const Carts = () => {
                         key={product._id}
                       >
                         <span>
-                          {product.title} (x{product.quantity})
+                          {product.name} (x{product.quantity})
                         </span>
                         <span>₹ {product.price * product.quantity}</span>
                       </li>

@@ -12,6 +12,9 @@ const Profile = () => {
       setFetchData(data);
     }
   }, [data]);
+ 
+
+
 
   return (
     <>
@@ -41,7 +44,8 @@ const Profile = () => {
     </div>
     </div>
       )}
-        <a href={`/checkout`} className="btn btn-primary my-3">Add address</a>
+        <a href={'/checkout'} className="btn btn-primary my-3">Add address</a>
+        
 
     </div>
     </>

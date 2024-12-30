@@ -379,7 +379,7 @@ const Checkout = () => {
                         key={product._id}
                       >
                         <span>
-                          {product.title} (x{product.quantity})
+                          {product.name} (x{product.quantity})
                         </span>
                         <span>₹ {product.price * product.quantity}</span>
                       </li>
