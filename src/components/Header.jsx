@@ -61,8 +61,7 @@ const Header = () => {
       <nav class="navbar navbar-expand-lg">
         <div className="container ">
           <a class="navbar-brand me-5" href="/">
-            myShoppingSite
-          </a>
+          FinchCart</a>
           {!shouldHideSearch && (
             <div className="collapse navbar-collapse">
               <form className="d-flex col-lg-8">
