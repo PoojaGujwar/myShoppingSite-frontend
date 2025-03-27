@@ -1,6 +1,8 @@
 import { useEffect, useState } from "react";
 import useFetch from "../useFetch";
 import Header from "../components/Header";
+import { Link, NavLink } from "react-router-dom";
+import AddressForm from "../components/AddressForm";
 
 const Profile = () => {
   const [fetchData, setFetchData] = useState();
@@ -12,10 +14,6 @@ const Profile = () => {
       setFetchData(data);
     }
   }, [data]);
- 
-
-
-
   return (
     <>
     <Header/>
@@ -44,8 +42,15 @@ const Profile = () => {
     </div>
     </div>
       )}
-        <a href={'/checkout'} className="btn btn-primary my-3">Add address</a>
-        
+      <Link to={"/addressForm"} className="btn btn-primary my-3">Add address</Link>
+        <div>
+          <h3>Addresses</h3>
+          <ul className="list-group col-md-8">
+{fetchData?.map((add,index)=>
+<li className="list-group-item" key={index}>{add.address.address}, {add.address.city}, {add.address.state}, {add.address.zipCode}</li>
+)}
+</ul>
+        </div>
 
     </div>
     </>
