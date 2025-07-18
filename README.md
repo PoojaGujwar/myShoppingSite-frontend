@@ -1,70 +1,103 @@
-# Getting Started with Create React App
+# FinchCart
 
-This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
+A full-stack shopping site where users can browse products, view details, add items to the cart or wishlist, and place orders. Built with a React frontend and Express/Node backend.
 
-## Available Scripts
+---
 
-In the project directory, you can run:
+## Demo Link
+[Live Demo](https://ganesh-one.vercel.app)
 
-### `npm start`
+---
 
-Runs the app in the development mode.\
-Open [http://localhost:3000](http://localhost:3000) to view it in your browser.
+## Quick Start
+```
+git clone https://github.com/PoojaGujwar/Ganesh.git
+cd <your_repo>
+npm install
+npm run start #or `npm start`
+```
 
-The page will reload when you make changes.\
-You may also see any lint errors in the console.
+---
 
-### `npm test`
+## Technologies
+- React.js
+- React Router
+- Node.js
+- Express
+- MongoDB
 
-Launches the test runner in the interactive watch mode.\
-See the section about [running tests](https://facebook.github.io/create-react-app/docs/running-tests) for more information.
+## Features
+**Home**
+- Displays Category cards
+- Wishlist 💖
+- Cart 🛒
+- Profile 👤
 
-### `npm run build`
+**All Products**
+- Displays a list of all product cards
+- Search items by category
+- Filter by rating, price, and category
+- Clear button to reset all filters
+- View product details button
 
-Builds the app for production to the `build` folder.\
-It correctly bundles React in production mode and optimizes the build for the best performance.
+**Product Details**
+- View full product information
+- Add to Cart
+- Add or remove from wishlist
 
-The build is minified and the filenames include the hashes.\
-Your app is ready to be deployed!
+**Cart**
+- Displays all cart items
+- Quantity can be increased or decreased
+- Remove items from cart
+- Add to wishlist 
+- Place order
 
-See the section about [deployment](https://facebook.github.io/create-react-app/docs/deployment) for more information.
+**Checkout**
+- Select a previous address 
+- Add a new address 
+- Update or remove an address
+- Place order 
 
-### `npm run eject`
+---
 
-**Note: this is a one-way operation. Once you `eject`, you can't go back!**
+## API Reference
 
-If you aren't satisfied with the build tool and configuration choices, you can `eject` at any time. This command will remove the single build dependency from your project.
+### **GET /products**
+List all products<br>
+Sample Response: <br>
+```
+[{_id, name, description, price, rating, size, color, category, imgURL}...]
+```
 
-Instead, it will copy all the configuration files and the transitive dependencies (webpack, Babel, ESLint, etc) right into your project so you have full control over them. All of the commands except `eject` will still work, but they will point to the copied scripts so you can tweak them. At this point you're on your own.
+### **GET /products/:id**
+Get details for one product<br>
+Sample Response:<br>
+```
+{_id, name, description, price, rating, size, color, category, imgURL}
+```
 
-You don't have to ever use `eject`. The curated feature set is suitable for small and middle deployments, and you shouldn't feel obligated to use this feature. However we understand that this tool wouldn't be useful if you couldn't customize it when you are ready for it.
+### **GET /address**
+List all addresses<br>
+Sample Response:<br>
+```
+[{_id, firstname, lastname, email, phoneNumber, address:{zipCode, state, city}}]
+```
 
-## Learn More
+### **POST /address**
+Creates a new address<br>
+Sample Response: <br>
+```
+{firstname, lastname, email, phonenumber, address:{address, zipCode, state, city}}
+```
 
-You can learn more in the [Create React App documentation](https://facebook.github.io/create-react-app/docs/getting-started).
+### **DELETE /address/:id**
+Delete address<br>
+Sample Response:<br>
+```
+{message}
+```
 
-To learn React, check out the [React documentation](https://reactjs.org/).
+--- 
 
-### Code Splitting
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/code-splitting](https://facebook.github.io/create-react-app/docs/code-splitting)
-
-### Analyzing the Bundle Size
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/analyzing-the-bundle-size](https://facebook.github.io/create-react-app/docs/analyzing-the-bundle-size)
-
-### Making a Progressive Web App
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app](https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app)
-
-### Advanced Configuration
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/advanced-configuration](https://facebook.github.io/create-react-app/docs/advanced-configuration)
-
-### Deployment
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/deployment](https://facebook.github.io/create-react-app/docs/deployment)
-
-### `npm run build` fails to minify
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify](https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify)
+## Contact
+For bugs or feature requests, please reach out to gujwarpooja@gmail.com
